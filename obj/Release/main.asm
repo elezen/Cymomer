@@ -875,7 +875,7 @@ _getFreq:
 	mov	b,a
 	ret
 00102$:
-;	main.c:108: return (unsigned long)(((unsigned long long)incount)*mainFreq/freqcount);
+;	main.c:108: return (unsigned long)((((unsigned long long)incount)*mainFreq*10/freqcount+5)/10);
 	mov	r0,_incount
 	mov	r1,(_incount + 1)
 	mov	r2,(_incount + 2)
@@ -901,6 +901,22 @@ _getFreq:
 	mov	b,r2
 	mov	a,r3
 	lcall	__mullonglong
+	mov	__mullonglong_PARM_2,dpl
+	mov	(__mullonglong_PARM_2 + 1),dph
+	mov	(__mullonglong_PARM_2 + 2),b
+	mov	(__mullonglong_PARM_2 + 3),a
+	mov	(__mullonglong_PARM_2 + 4),r4
+	mov	(__mullonglong_PARM_2 + 5),r5
+	mov	(__mullonglong_PARM_2 + 6),r6
+	mov	(__mullonglong_PARM_2 + 7),r7
+	mov	dptr,#(0x0a&0x00ff)
+	clr	a
+	mov	b,a
+	mov	r4,a
+	mov	r5,a
+	mov	r6,a
+	mov	r7,a
+	lcall	__mullonglong
 	mov	r0,dpl
 	mov	r1,dph
 	mov	r2,b
@@ -913,6 +929,48 @@ _getFreq:
 	mov	(__divulonglong_PARM_2 + 5),#0x00
 	mov	(__divulonglong_PARM_2 + 6),#0x00
 	mov	(__divulonglong_PARM_2 + 7),#0x00
+	mov	dpl,r0
+	mov	dph,r1
+	mov	b,r2
+	mov	a,r3
+	lcall	__divulonglong
+	mov	r0,dpl
+	mov	r1,dph
+	mov	r2,b
+	mov	r3,a
+	mov	a,#0x05
+	add	a,r0
+	mov	r0,a
+	clr	a
+	addc	a,r1
+	mov	r1,a
+	clr	a
+	addc	a,r2
+	mov	r2,a
+	clr	a
+	addc	a,r3
+	mov	r3,a
+	clr	a
+	addc	a,r4
+	mov	r4,a
+	clr	a
+	addc	a,r5
+	mov	r5,a
+	clr	a
+	addc	a,r6
+	mov	r6,a
+	clr	a
+	addc	a,r7
+	mov	r7,a
+	mov	__divulonglong_PARM_2,#0x0a
+	clr	a
+	mov	(__divulonglong_PARM_2 + 1),a
+	mov	(__divulonglong_PARM_2 + 2),a
+	mov	(__divulonglong_PARM_2 + 3),a
+	mov	(__divulonglong_PARM_2 + 4),a
+	mov	(__divulonglong_PARM_2 + 5),a
+	mov	(__divulonglong_PARM_2 + 6),a
+	mov	(__divulonglong_PARM_2 + 7),a
 	mov	dpl,r0
 	mov	dph,r1
 	mov	b,r2
@@ -1230,8 +1288,8 @@ _main:
 	mov	_TL1,#0x00
 ;	main.c:219: RCAP2H=0xFD;   //10M  1/1000s
 	mov	_RCAP2H,#0xfd
-;	main.c:220: RCAP2L=0xBE;
-	mov	_RCAP2L,#0xbe
+;	main.c:220: RCAP2L=0xBD;
+	mov	_RCAP2L,#0xbd
 ;	main.c:221: T2CON=0;
 	mov	_T2CON,#0x00
 ;	main.c:222: T2MOD=0;
@@ -1296,8 +1354,8 @@ _main:
 ;	main.c:237: putlong(getFreq());
 	lcall	_getFreq
 	lcall	_putlong
-;	main.c:238: gateDelay=16;
-	mov	_gateDelay,#0x10
+;	main.c:238: gateDelay=17;
+	mov	_gateDelay,#0x11
 	sjmp	00114$
 00107$:
 ;	main.c:239: }else if(gateDelay==5){

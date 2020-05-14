@@ -105,7 +105,7 @@ unsigned long getCount(){
 }
 unsigned long getFreq(){
     if(freqcount==0)return 0;
-    return (unsigned long)(((unsigned long long)incount)*mainFreq/freqcount);
+    return (unsigned long)((((unsigned long long)incount)*mainFreq*10/freqcount+5)/10);
 }
 void reset(){
     GATECTL=0;
@@ -217,7 +217,7 @@ void main(void){
     TH1=0;
     TL1=0;
     RCAP2H=0xFD;   //10M  1/1000s
-    RCAP2L=0xBE;
+    RCAP2L=0xBD;
     T2CON=0;
     T2MOD=0;
     TR2=1;
@@ -235,7 +235,7 @@ void main(void){
                     gatelost=gateDelay==0;
                     reset();
                     putlong(getFreq());
-                    gateDelay=16;
+                    gateDelay=17;
                 }else if(gateDelay==5){
                     GATECTL=0;
                 }

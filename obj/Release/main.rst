@@ -496,7 +496,7 @@
                                     496 	.area HOME    (CODE)
                                     497 	.area HOME    (CODE)
       00002E                        498 __sdcc_program_startup:
-      00002E 02 03 CF         [24]  499 	ljmp	_main
+      00002E 02 04 2B         [24]  499 	ljmp	_main
                                     500 ;	return from main will return to caller
                                     501 ;--------------------------------------------------------
                                     502 ; code
@@ -635,7 +635,7 @@
       000116                        635 00102$:
                                     636 ;	main.c:63: SBUF=LedDigit[led_i];
       000116 E5 21            [12]  637 	mov	a,_led_i
-      000118 90 07 EF         [24]  638 	mov	dptr,#_LedDigit
+      000118 90 08 4B         [24]  638 	mov	dptr,#_LedDigit
       00011B 93               [24]  639 	movc	a,@a+dptr
       00011C F5 99            [12]  640 	mov	_SBUF,a
                                     641 ;	main.c:64: if(--msTick==0){
@@ -679,7 +679,7 @@
       00013F 8D 82            [24]  679 	mov	dpl,r5
       000141 8E 83            [24]  680 	mov	dph,r6
       000143 8F F0            [24]  681 	mov	b,r7
-      000145 12 07 BF         [24]  682 	lcall	__gptrget
+      000145 12 08 1B         [24]  682 	lcall	__gptrget
       000148 FB               [12]  683 	mov	r3,a
       000149 A3               [24]  684 	inc	dptr
       00014A AD 82            [24]  685 	mov	r5,dpl
@@ -733,15 +733,15 @@
       000181 85 40 F0         [24]  733 	mov	b,(_putlong_a_65536_13 + 2)
       000184 E5 41            [12]  734 	mov	a,(_putlong_a_65536_13 + 3)
       000186 C0 03            [24]  735 	push	ar3
-      000188 12 04 72         [24]  736 	lcall	__modulong
+      000188 12 04 CE         [24]  736 	lcall	__modulong
       00018B AA 82            [24]  737 	mov	r2,dpl
       00018D AD 83            [24]  738 	mov	r5,dph
       00018F D0 03            [24]  739 	pop	ar3
       000191 EA               [12]  740 	mov	a,r2
-      000192 24 DF            [12]  741 	add	a,#_LedSegs
+      000192 24 3B            [12]  741 	add	a,#_LedSegs
       000194 F5 82            [12]  742 	mov	dpl,a
       000196 ED               [12]  743 	mov	a,r5
-      000197 34 07            [12]  744 	addc	a,#(_LedSegs >> 8)
+      000197 34 08            [12]  744 	addc	a,#(_LedSegs >> 8)
       000199 F5 83            [12]  745 	mov	dph,a
       00019B E4               [12]  746 	clr	a
       00019C 93               [24]  747 	movc	a,@a+dptr
@@ -770,7 +770,7 @@
       0001BF 85 40 F0         [24]  770 	mov	b,(_putlong_a_65536_13 + 2)
       0001C2 E5 41            [12]  771 	mov	a,(_putlong_a_65536_13 + 3)
       0001C4 C0 03            [24]  772 	push	ar3
-      0001C6 12 04 F5         [24]  773 	lcall	__divulong
+      0001C6 12 05 51         [24]  773 	lcall	__divulong
       0001C9 85 82 3E         [24]  774 	mov	_putlong_a_65536_13,dpl
       0001CC 85 83 3F         [24]  775 	mov	(_putlong_a_65536_13 + 1),dph
       0001CF 85 F0 40         [24]  776 	mov	(_putlong_a_65536_13 + 2),b
@@ -875,7 +875,7 @@
       000245 F5 F0            [12]  875 	mov	b,a
       000247 22               [24]  876 	ret
       000248                        877 00102$:
-                                    878 ;	main.c:108: return (unsigned long)(((unsigned long long)incount)*mainFreq/freqcount);
+                                    878 ;	main.c:108: return (unsigned long)((((unsigned long long)incount)*mainFreq*10/freqcount+5)/10);
       000248 A8 36            [24]  879 	mov	r0,_incount
       00024A A9 37            [24]  880 	mov	r1,(_incount + 1)
       00024C AA 38            [24]  881 	mov	r2,(_incount + 2)
@@ -900,497 +900,555 @@
       00026E 89 83            [24]  900 	mov	dph,r1
       000270 8A F0            [24]  901 	mov	b,r2
       000272 EB               [12]  902 	mov	a,r3
-      000273 12 05 5A         [24]  903 	lcall	__mullonglong
-      000276 A8 82            [24]  904 	mov	r0,dpl
-      000278 A9 83            [24]  905 	mov	r1,dph
-      00027A AA F0            [24]  906 	mov	r2,b
-      00027C FB               [12]  907 	mov	r3,a
-      00027D 85 3A 46         [24]  908 	mov	__divulonglong_PARM_2,_freqcount
-      000280 85 3B 47         [24]  909 	mov	(__divulonglong_PARM_2 + 1),(_freqcount + 1)
-      000283 85 3C 48         [24]  910 	mov	(__divulonglong_PARM_2 + 2),(_freqcount + 2)
-      000286 85 3D 49         [24]  911 	mov	(__divulonglong_PARM_2 + 3),(_freqcount + 3)
-      000289 75 4A 00         [24]  912 	mov	(__divulonglong_PARM_2 + 4),#0x00
-      00028C 75 4B 00         [24]  913 	mov	(__divulonglong_PARM_2 + 5),#0x00
-      00028F 75 4C 00         [24]  914 	mov	(__divulonglong_PARM_2 + 6),#0x00
-      000292 75 4D 00         [24]  915 	mov	(__divulonglong_PARM_2 + 7),#0x00
-      000295 88 82            [24]  916 	mov	dpl,r0
-      000297 89 83            [24]  917 	mov	dph,r1
-      000299 8A F0            [24]  918 	mov	b,r2
-      00029B EB               [12]  919 	mov	a,r3
-                                    920 ;	main.c:109: }
-      00029C 02 06 BC         [24]  921 	ljmp	__divulonglong
-                                    922 ;------------------------------------------------------------
-                                    923 ;Allocation info for local variables in function 'reset'
-                                    924 ;------------------------------------------------------------
-                                    925 ;	main.c:110: void reset(){
-                                    926 ;	-----------------------------------------
-                                    927 ;	 function reset
-                                    928 ;	-----------------------------------------
-      00029F                        929 _reset:
-                                    930 ;	main.c:111: GATECTL=0;
-                                    931 ;	assignBit
-      00029F C2 B6            [12]  932 	clr	_P3_6
-                                    933 ;	main.c:112: TR0=0;TR1=0;
-                                    934 ;	assignBit
-      0002A1 C2 8C            [12]  935 	clr	_TR0
-                                    936 ;	assignBit
-      0002A3 C2 8E            [12]  937 	clr	_TR1
-                                    938 ;	main.c:113: inCnt.b0=P0;
-      0002A5 85 80 2E         [24]  939 	mov	_inCnt,_P0
-                                    940 ;	main.c:114: inCnt.b1=TL0;
-      0002A8 85 8A 2F         [24]  941 	mov	(_inCnt + 0x0001),_TL0
-                                    942 ;	main.c:115: inCnt.b2=TH0;
-      0002AB 85 8C 30         [24]  943 	mov	(_inCnt + 0x0002),_TH0
-                                    944 ;	main.c:116: incount=inCnt.l;
-      0002AE 85 2E 36         [24]  945 	mov	_incount,(_inCnt + 0)
-      0002B1 85 2F 37         [24]  946 	mov	(_incount + 1),(_inCnt + 1)
-      0002B4 85 30 38         [24]  947 	mov	(_incount + 2),(_inCnt + 2)
-      0002B7 85 31 39         [24]  948 	mov	(_incount + 3),(_inCnt + 3)
-                                    949 ;	main.c:117: inCnt.b3=0;
-      0002BA 75 31 00         [24]  950 	mov	(_inCnt + 0x0003),#0x00
-                                    951 ;	main.c:118: freqCnt.b0=P2;
-      0002BD 85 A0 32         [24]  952 	mov	_freqCnt,_P2
-                                    953 ;	main.c:119: freqCnt.b1=TL1;
-      0002C0 85 8B 33         [24]  954 	mov	(_freqCnt + 0x0001),_TL1
-                                    955 ;	main.c:120: freqCnt.b2=TH1;
-      0002C3 85 8D 34         [24]  956 	mov	(_freqCnt + 0x0002),_TH1
-                                    957 ;	main.c:121: freqcount=freqCnt.l;
-      0002C6 85 32 3A         [24]  958 	mov	_freqcount,(_freqCnt + 0)
-      0002C9 85 33 3B         [24]  959 	mov	(_freqcount + 1),(_freqCnt + 1)
-      0002CC 85 34 3C         [24]  960 	mov	(_freqcount + 2),(_freqCnt + 2)
-      0002CF 85 35 3D         [24]  961 	mov	(_freqcount + 3),(_freqCnt + 3)
-                                    962 ;	main.c:122: freqCnt.b3=0;
-      0002D2 75 35 00         [24]  963 	mov	(_freqCnt + 0x0003),#0x00
-                                    964 ;	main.c:123: CLR=1;
-                                    965 ;	assignBit
-      0002D5 D2 B7            [12]  966 	setb	_P3_7
-                                    967 ;	main.c:124: TH0=TL0=TH1=TL1=0;
-      0002D7 75 8B 00         [24]  968 	mov	_TL1,#0x00
-      0002DA 75 8D 00         [24]  969 	mov	_TH1,#0x00
-      0002DD 75 8A 00         [24]  970 	mov	_TL0,#0x00
-      0002E0 75 8C 00         [24]  971 	mov	_TH0,#0x00
-                                    972 ;	main.c:125: overflow=false;
-                                    973 ;	assignBit
-      0002E3 C2 01            [12]  974 	clr	_overflow
-                                    975 ;	main.c:126: CLR=0;
-                                    976 ;	assignBit
-      0002E5 C2 B7            [12]  977 	clr	_P3_7
-                                    978 ;	main.c:127: TR0=1;TR1=1;
-                                    979 ;	assignBit
-      0002E7 D2 8C            [12]  980 	setb	_TR0
-                                    981 ;	assignBit
-      0002E9 D2 8E            [12]  982 	setb	_TR1
-                                    983 ;	main.c:128: GATECTL=1;
-                                    984 ;	assignBit
-      0002EB D2 B6            [12]  985 	setb	_P3_6
-                                    986 ;	main.c:129: }
-      0002ED 22               [24]  987 	ret
-                                    988 ;------------------------------------------------------------
-                                    989 ;Allocation info for local variables in function 'readKey'
-                                    990 ;------------------------------------------------------------
-                                    991 ;keylong                   Allocated with name '_readKey_keylong_65536_23'
-                                    992 ;gotkey                    Allocated with name '_readKey_gotkey_65536_23'
-                                    993 ;k                         Allocated to registers r7 
-                                    994 ;key                       Allocated to registers r6 
-                                    995 ;------------------------------------------------------------
-                                    996 ;	main.c:132: unsigned char readKey(){
-                                    997 ;	-----------------------------------------
-                                    998 ;	 function readKey
-                                    999 ;	-----------------------------------------
-      0002EE                       1000 _readKey:
-                                   1001 ;	main.c:135: unsigned char k=0,key=0;
-      0002EE 7F 00            [12] 1002 	mov	r7,#0x00
-      0002F0 7E 00            [12] 1003 	mov	r6,#0x00
-                                   1004 ;	main.c:137: if(!KEY)key=1;if(!KEY2)key=2;
-      0002F2 20 90 02         [24] 1005 	jb	_P1_0,00102$
-      0002F5 7E 01            [12] 1006 	mov	r6,#0x01
-      0002F7                       1007 00102$:
-      0002F7 20 91 02         [24] 1008 	jb	_P1_1,00104$
-      0002FA 7E 02            [12] 1009 	mov	r6,#0x02
-      0002FC                       1010 00104$:
-                                   1011 ;	main.c:138: if(key!=0){
-      0002FC EE               [12] 1012 	mov	a,r6
-      0002FD 60 24            [24] 1013 	jz	00116$
-                                   1014 ;	main.c:139: gotkey=key;
-      0002FF 8E 44            [24] 1015 	mov	_readKey_gotkey_65536_23,r6
-                                   1016 ;	main.c:140: if(keydly>0)keydly--;
-      000301 E5 27            [12] 1017 	mov	a,_keydly
-      000303 60 02            [24] 1018 	jz	00106$
-      000305 15 27            [12] 1019 	dec	_keydly
-      000307                       1020 00106$:
-                                   1021 ;	main.c:141: if(keylong>0)keylong--;
-      000307 E5 42            [12] 1022 	mov	a,_readKey_keylong_65536_23
-      000309 45 43            [12] 1023 	orl	a,(_readKey_keylong_65536_23 + 1)
-      00030B 60 0B            [24] 1024 	jz	00110$
-      00030D 15 42            [12] 1025 	dec	_readKey_keylong_65536_23
-      00030F 74 FF            [12] 1026 	mov	a,#0xff
-      000311 B5 42 02         [24] 1027 	cjne	a,_readKey_keylong_65536_23,00157$
-      000314 15 43            [12] 1028 	dec	(_readKey_keylong_65536_23 + 1)
-      000316                       1029 00157$:
-      000316 80 1F            [24] 1030 	sjmp	00117$
-      000318                       1031 00110$:
-                                   1032 ;	main.c:143: if(!longdown){
-      000318 20 04 1C         [24] 1033 	jb	_readKey_longdown_65536_23,00117$
-                                   1034 ;	main.c:144: longdown=true;
-                                   1035 ;	assignBit
-      00031B D2 04            [12] 1036 	setb	_readKey_longdown_65536_23
-                                   1037 ;	main.c:145: k=key+2;
-      00031D 74 02            [12] 1038 	mov	a,#0x02
-      00031F 2E               [12] 1039 	add	a,r6
-      000320 FF               [12] 1040 	mov	r7,a
-      000321 80 14            [24] 1041 	sjmp	00117$
-      000323                       1042 00116$:
-                                   1043 ;	main.c:149: if(keydly==0 && !longdown)k=gotkey;
-      000323 E5 27            [12] 1044 	mov	a,_keydly
-      000325 70 05            [24] 1045 	jnz	00113$
-      000327 20 04 02         [24] 1046 	jb	_readKey_longdown_65536_23,00113$
-      00032A AF 44            [24] 1047 	mov	r7,_readKey_gotkey_65536_23
-      00032C                       1048 00113$:
-                                   1049 ;	main.c:150: keydly=KEYDLY;
-      00032C 75 27 32         [24] 1050 	mov	_keydly,#0x32
-                                   1051 ;	main.c:151: keylong=KEYLONG;
-      00032F 75 42 F4         [24] 1052 	mov	_readKey_keylong_65536_23,#0xf4
-      000332 75 43 01         [24] 1053 	mov	(_readKey_keylong_65536_23 + 1),#0x01
-                                   1054 ;	main.c:152: longdown=false;
-                                   1055 ;	assignBit
-      000335 C2 04            [12] 1056 	clr	_readKey_longdown_65536_23
-      000337                       1057 00117$:
-                                   1058 ;	main.c:154: return k;
-      000337 8F 82            [24] 1059 	mov	dpl,r7
-                                   1060 ;	main.c:155: }
-      000339 22               [24] 1061 	ret
-                                   1062 ;------------------------------------------------------------
-                                   1063 ;Allocation info for local variables in function 'setmode'
-                                   1064 ;------------------------------------------------------------
-                                   1065 ;	main.c:157: void setmode(){
-                                   1066 ;	-----------------------------------------
-                                   1067 ;	 function setmode
-                                   1068 ;	-----------------------------------------
-      00033A                       1069 _setmode:
-                                   1070 ;	main.c:158: switch(readKey()){
-      00033A 12 02 EE         [24] 1071 	lcall	_readKey
-      00033D AF 82            [24] 1072 	mov	r7,dpl
-      00033F BF 01 02         [24] 1073 	cjne	r7,#0x01,00153$
-      000342 80 10            [24] 1074 	sjmp	00101$
-      000344                       1075 00153$:
-      000344 BF 02 02         [24] 1076 	cjne	r7,#0x02,00154$
-      000347 80 35            [24] 1077 	sjmp	00105$
-      000349                       1078 00154$:
-      000349 BF 03 02         [24] 1079 	cjne	r7,#0x03,00155$
-      00034C 80 59            [24] 1080 	sjmp	00110$
-      00034E                       1081 00155$:
-      00034E BF 04 02         [24] 1082 	cjne	r7,#0x04,00156$
-      000351 80 54            [24] 1083 	sjmp	00110$
-      000353                       1084 00156$:
-      000353 22               [24] 1085 	ret
-                                   1086 ;	main.c:159: case 1:  //+
-      000354                       1087 00101$:
-                                   1088 ;	main.c:160: switch(mode){
-      000354 E4               [12] 1089 	clr	a
-      000355 B5 45 02         [24] 1090 	cjne	a,_mode,00157$
-      000358 80 08            [24] 1091 	sjmp	00102$
-      00035A                       1092 00157$:
-      00035A 74 01            [12] 1093 	mov	a,#0x01
-      00035C B5 45 02         [24] 1094 	cjne	a,_mode,00158$
-      00035F 80 1A            [24] 1095 	sjmp	00103$
-      000361                       1096 00158$:
-      000361 22               [24] 1097 	ret
-                                   1098 ;	main.c:161: case Freq:
-      000362                       1099 00102$:
-                                   1100 ;	main.c:162: speed=NORMAL;
-      000362 75 26 64         [24] 1101 	mov	_speed,#0x64
-                                   1102 ;	main.c:163: putstr(normal);
-      000365 90 08 17         [24] 1103 	mov	dptr,#_normal
-      000368 75 F0 80         [24] 1104 	mov	b,#0x80
-      00036B 12 01 33         [24] 1105 	lcall	_putstr
-                                   1106 ;	main.c:164: reset();
-      00036E 12 02 9F         [24] 1107 	lcall	_reset
-                                   1108 ;	main.c:165: gateDelay=16;
-      000371 75 25 10         [24] 1109 	mov	_gateDelay,#0x10
-                                   1110 ;	main.c:166: delay=1000;
-      000374 75 28 E8         [24] 1111 	mov	_delay,#0xe8
-      000377 75 29 03         [24] 1112 	mov	(_delay + 1),#0x03
-                                   1113 ;	main.c:167: break;
-                                   1114 ;	main.c:168: case Counter:
-      00037A 22               [24] 1115 	ret
-      00037B                       1116 00103$:
-                                   1117 ;	main.c:169: GATECTL=!GATECTL;
-      00037B B2 B6            [12] 1118 	cpl	_P3_6
-                                   1119 ;	main.c:172: break;
-                                   1120 ;	main.c:173: case 2:  //-
-      00037D 22               [24] 1121 	ret
-      00037E                       1122 00105$:
-                                   1123 ;	main.c:174: switch(mode){
-      00037E E4               [12] 1124 	clr	a
-      00037F B5 45 02         [24] 1125 	cjne	a,_mode,00159$
-      000382 80 07            [24] 1126 	sjmp	00106$
-      000384                       1127 00159$:
-      000384 74 01            [12] 1128 	mov	a,#0x01
-                                   1129 ;	main.c:175: case Freq:
-      000386 B5 45 45         [24] 1130 	cjne	a,_mode,00115$
-      000389 80 19            [24] 1131 	sjmp	00107$
-      00038B                       1132 00106$:
-                                   1133 ;	main.c:176: speed=FAST;
-      00038B 75 26 0A         [24] 1134 	mov	_speed,#0x0a
-                                   1135 ;	main.c:177: putstr(fast);
-      00038E 90 08 0F         [24] 1136 	mov	dptr,#_fast
-      000391 75 F0 80         [24] 1137 	mov	b,#0x80
-      000394 12 01 33         [24] 1138 	lcall	_putstr
-                                   1139 ;	main.c:178: reset();
-      000397 12 02 9F         [24] 1140 	lcall	_reset
-                                   1141 ;	main.c:179: gateDelay=16;
-      00039A 75 25 10         [24] 1142 	mov	_gateDelay,#0x10
-                                   1143 ;	main.c:180: delay=1000;
-      00039D 75 28 E8         [24] 1144 	mov	_delay,#0xe8
-      0003A0 75 29 03         [24] 1145 	mov	(_delay + 1),#0x03
-                                   1146 ;	main.c:181: break;
-                                   1147 ;	main.c:182: case Counter:
-      0003A3 22               [24] 1148 	ret
-      0003A4                       1149 00107$:
-                                   1150 ;	main.c:183: reset();
-                                   1151 ;	main.c:186: break;
-                                   1152 ;	main.c:188: case 4:
-      0003A4 02 02 9F         [24] 1153 	ljmp	_reset
-      0003A7                       1154 00110$:
-                                   1155 ;	main.c:189: if(mode!=Freq){
-      0003A7 E5 45            [12] 1156 	mov	a,_mode
-      0003A9 60 0E            [24] 1157 	jz	00112$
-                                   1158 ;	main.c:190: mode=Freq;
-      0003AB 75 45 00         [24] 1159 	mov	_mode,#0x00
-                                   1160 ;	main.c:191: putstr(freq);
-      0003AE 90 08 07         [24] 1161 	mov	dptr,#_freq
-      0003B1 75 F0 80         [24] 1162 	mov	b,#0x80
-      0003B4 12 01 33         [24] 1163 	lcall	_putstr
-      0003B7 80 0C            [24] 1164 	sjmp	00113$
-      0003B9                       1165 00112$:
-                                   1166 ;	main.c:193: mode=Counter;
-      0003B9 75 45 01         [24] 1167 	mov	_mode,#0x01
-                                   1168 ;	main.c:194: putstr(counter);
-      0003BC 90 07 FF         [24] 1169 	mov	dptr,#_counter
-      0003BF 75 F0 80         [24] 1170 	mov	b,#0x80
-      0003C2 12 01 33         [24] 1171 	lcall	_putstr
-      0003C5                       1172 00113$:
-                                   1173 ;	main.c:196: reset();
-      0003C5 12 02 9F         [24] 1174 	lcall	_reset
-                                   1175 ;	main.c:197: delay=1000;
-      0003C8 75 28 E8         [24] 1176 	mov	_delay,#0xe8
-      0003CB 75 29 03         [24] 1177 	mov	(_delay + 1),#0x03
-                                   1178 ;	main.c:199: }
-      0003CE                       1179 00115$:
-                                   1180 ;	main.c:201: }
-      0003CE 22               [24] 1181 	ret
-                                   1182 ;------------------------------------------------------------
-                                   1183 ;Allocation info for local variables in function 'main'
-                                   1184 ;------------------------------------------------------------
-                                   1185 ;	main.c:204: void main(void){
-                                   1186 ;	-----------------------------------------
-                                   1187 ;	 function main
-                                   1188 ;	-----------------------------------------
-      0003CF                       1189 _main:
-                                   1190 ;	main.c:206: PT0=1;PT1=1;
-                                   1191 ;	assignBit
-      0003CF D2 B9            [12] 1192 	setb	_PT0
-                                   1193 ;	assignBit
-      0003D1 D2 BB            [12] 1194 	setb	_PT1
-                                   1195 ;	main.c:207: PT2=1;
-                                   1196 ;	assignBit
-      0003D3 D2 BD            [12] 1197 	setb	_PT2
-                                   1198 ;	main.c:208: SCON=0;
-      0003D5 75 98 00         [24] 1199 	mov	_SCON,#0x00
-                                   1200 ;	main.c:209: REN=0;
-                                   1201 ;	assignBit
-      0003D8 C2 9C            [12] 1202 	clr	_REN
-                                   1203 ;	main.c:210: ES=1;
-                                   1204 ;	assignBit
-      0003DA D2 AC            [12] 1205 	setb	_ES
-                                   1206 ;	main.c:211: GATECTL=0;
-                                   1207 ;	assignBit
-      0003DC C2 B6            [12] 1208 	clr	_P3_6
-                                   1209 ;	main.c:212: CLR=1;
-                                   1210 ;	assignBit
-      0003DE D2 B7            [12] 1211 	setb	_P3_7
-                                   1212 ;	main.c:213: TMOD=0x55;
-      0003E0 75 89 55         [24] 1213 	mov	_TMOD,#0x55
-                                   1214 ;	main.c:214: TR0=0;TR1=0;ET0=1;ET1=1;
-                                   1215 ;	assignBit
-      0003E3 C2 8C            [12] 1216 	clr	_TR0
-                                   1217 ;	assignBit
-      0003E5 C2 8E            [12] 1218 	clr	_TR1
-                                   1219 ;	assignBit
-      0003E7 D2 A9            [12] 1220 	setb	_ET0
-                                   1221 ;	assignBit
-      0003E9 D2 AB            [12] 1222 	setb	_ET1
-                                   1223 ;	main.c:215: TH0=0;
-      0003EB 75 8C 00         [24] 1224 	mov	_TH0,#0x00
-                                   1225 ;	main.c:216: TL0=0;
-      0003EE 75 8A 00         [24] 1226 	mov	_TL0,#0x00
-                                   1227 ;	main.c:217: TH1=0;
-      0003F1 75 8D 00         [24] 1228 	mov	_TH1,#0x00
-                                   1229 ;	main.c:218: TL1=0;
-      0003F4 75 8B 00         [24] 1230 	mov	_TL1,#0x00
-                                   1231 ;	main.c:219: RCAP2H=0xFD;   //10M  1/1000s
-      0003F7 75 CB FD         [24] 1232 	mov	_RCAP2H,#0xfd
-                                   1233 ;	main.c:220: RCAP2L=0xBE;
-      0003FA 75 CA BE         [24] 1234 	mov	_RCAP2L,#0xbe
-                                   1235 ;	main.c:221: T2CON=0;
-      0003FD 75 C8 00         [24] 1236 	mov	_T2CON,#0x00
-                                   1237 ;	main.c:222: T2MOD=0;
-      000400 75 C9 00         [24] 1238 	mov	_T2MOD,#0x00
-                                   1239 ;	main.c:223: TR2=1;
-                                   1240 ;	assignBit
-      000403 D2 CA            [12] 1241 	setb	_TR2
-                                   1242 ;	main.c:224: ET2=1;
-                                   1243 ;	assignBit
-      000405 D2 AD            [12] 1244 	setb	_ET2
-                                   1245 ;	main.c:225: EA=1;
-                                   1246 ;	assignBit
-      000407 D2 AF            [12] 1247 	setb	_EA
-                                   1248 ;	main.c:226: putstr(cymomer);
-      000409 90 07 F7         [24] 1249 	mov	dptr,#_cymomer
-      00040C 75 F0 80         [24] 1250 	mov	b,#0x80
-      00040F 12 01 33         [24] 1251 	lcall	_putstr
-                                   1252 ;	main.c:227: delay=1000;
-      000412 75 28 E8         [24] 1253 	mov	_delay,#0xe8
-      000415 75 29 03         [24] 1254 	mov	(_delay + 1),#0x03
-                                   1255 ;	main.c:228: while(1){
-      000418                       1256 00114$:
-                                   1257 ;	main.c:229: PCON|=1;
-      000418 43 87 01         [24] 1258 	orl	_PCON,#0x01
-                                   1259 ;	main.c:230: setmode();
-      00041B 12 03 3A         [24] 1260 	lcall	_setmode
-                                   1261 ;	main.c:231: if(delay>0){delay--;continue;}
-      00041E E5 28            [12] 1262 	mov	a,_delay
-      000420 45 29            [12] 1263 	orl	a,(_delay + 1)
-      000422 60 0B            [24] 1264 	jz	00102$
-      000424 15 28            [12] 1265 	dec	_delay
-      000426 74 FF            [12] 1266 	mov	a,#0xff
-      000428 B5 28 02         [24] 1267 	cjne	a,_delay,00143$
-      00042B 15 29            [12] 1268 	dec	(_delay + 1)
-      00042D                       1269 00143$:
-      00042D 80 E9            [24] 1270 	sjmp	00114$
-      00042F                       1271 00102$:
-                                   1272 ;	main.c:232: switch(mode){
-      00042F E4               [12] 1273 	clr	a
-      000430 B5 45 02         [24] 1274 	cjne	a,_mode,00144$
-      000433 80 07            [24] 1275 	sjmp	00103$
-      000435                       1276 00144$:
-      000435 74 01            [12] 1277 	mov	a,#0x01
-                                   1278 ;	main.c:233: case Freq:
-      000437 B5 45 DE         [24] 1279 	cjne	a,_mode,00114$
-      00043A 80 28            [24] 1280 	sjmp	00111$
-      00043C                       1281 00103$:
-                                   1282 ;	main.c:234: if(!GATE&&!GATECTL||gateDelay==0){
-      00043C 20 B3 03         [24] 1283 	jb	_P3_3,00110$
-      00043F 30 B6 04         [24] 1284 	jnb	_P3_6,00106$
-      000442                       1285 00110$:
-      000442 E5 25            [12] 1286 	mov	a,_gateDelay
-      000444 70 15            [24] 1287 	jnz	00107$
-      000446                       1288 00106$:
-                                   1289 ;	main.c:235: gatelost=gateDelay==0;
-      000446 E5 25            [12] 1290 	mov	a,_gateDelay
-      000448 B4 01 00         [24] 1291 	cjne	a,#0x01,00149$
-      00044B                       1292 00149$:
-      00044B 92 02            [24] 1293 	mov	_gatelost,c
-                                   1294 ;	main.c:236: reset();
-      00044D 12 02 9F         [24] 1295 	lcall	_reset
-                                   1296 ;	main.c:237: putlong(getFreq());
-      000450 12 02 37         [24] 1297 	lcall	_getFreq
-      000453 12 01 57         [24] 1298 	lcall	_putlong
-                                   1299 ;	main.c:238: gateDelay=16;
-      000456 75 25 10         [24] 1300 	mov	_gateDelay,#0x10
-      000459 80 BD            [24] 1301 	sjmp	00114$
-      00045B                       1302 00107$:
-                                   1303 ;	main.c:239: }else if(gateDelay==5){
-      00045B 74 05            [12] 1304 	mov	a,#0x05
-      00045D B5 25 B8         [24] 1305 	cjne	a,_gateDelay,00114$
-                                   1306 ;	main.c:240: GATECTL=0;
-                                   1307 ;	assignBit
-      000460 C2 B6            [12] 1308 	clr	_P3_6
-                                   1309 ;	main.c:242: break;
-                                   1310 ;	main.c:243: case Counter:
-      000462 80 B4            [24] 1311 	sjmp	00114$
-      000464                       1312 00111$:
-                                   1313 ;	main.c:244: putlong(getCount());
-      000464 12 02 22         [24] 1314 	lcall	_getCount
-      000467 12 01 57         [24] 1315 	lcall	_putlong
-                                   1316 ;	main.c:245: delay=50;
-      00046A 75 28 32         [24] 1317 	mov	_delay,#0x32
-      00046D 75 29 00         [24] 1318 	mov	(_delay + 1),#0x00
-                                   1319 ;	main.c:247: }
-                                   1320 ;	main.c:250: }
-      000470 80 A6            [24] 1321 	sjmp	00114$
-                                   1322 	.area CSEG    (CODE)
-                                   1323 	.area CONST   (CODE)
-      0007DF                       1324 _LedSegs:
-      0007DF 03                    1325 	.db #0x03	; 3
-      0007E0 9F                    1326 	.db #0x9f	; 159
-      0007E1 25                    1327 	.db #0x25	; 37
-      0007E2 0D                    1328 	.db #0x0d	; 13
-      0007E3 99                    1329 	.db #0x99	; 153
-      0007E4 49                    1330 	.db #0x49	; 73	'I'
-      0007E5 41                    1331 	.db #0x41	; 65	'A'
-      0007E6 1F                    1332 	.db #0x1f	; 31
-      0007E7 01                    1333 	.db #0x01	; 1
-      0007E8 09                    1334 	.db #0x09	; 9
-      0007E9 11                    1335 	.db #0x11	; 17
-      0007EA C1                    1336 	.db #0xc1	; 193
-      0007EB 63                    1337 	.db #0x63	; 99	'c'
-      0007EC 85                    1338 	.db #0x85	; 133
-      0007ED 61                    1339 	.db #0x61	; 97	'a'
-      0007EE 71                    1340 	.db #0x71	; 113	'q'
-      0007EF                       1341 _LedDigit:
-      0007EF 01                    1342 	.db #0x01	; 1
-      0007F0 02                    1343 	.db #0x02	; 2
-      0007F1 04                    1344 	.db #0x04	; 4
-      0007F2 08                    1345 	.db #0x08	; 8
-      0007F3 10                    1346 	.db #0x10	; 16
-      0007F4 20                    1347 	.db #0x20	; 32
-      0007F5 40                    1348 	.db #0x40	; 64
-      0007F6 80                    1349 	.db #0x80	; 128
-      0007F7                       1350 _cymomer:
-      0007F7 63                    1351 	.db #0x63	; 99	'c'
-      0007F8 89                    1352 	.db #0x89	; 137
-      0007F9 55                    1353 	.db #0x55	; 85	'U'
-      0007FA C5                    1354 	.db #0xc5	; 197
-      0007FB 55                    1355 	.db #0x55	; 85	'U'
-      0007FC 21                    1356 	.db #0x21	; 33
-      0007FD F5                    1357 	.db #0xf5	; 245
-      0007FE FF                    1358 	.db #0xff	; 255
-      0007FF                       1359 _counter:
-      0007FF 63                    1360 	.db #0x63	; 99	'c'
-      000800 C5                    1361 	.db #0xc5	; 197
-      000801 C7                    1362 	.db #0xc7	; 199
-      000802 D5                    1363 	.db #0xd5	; 213
-      000803 E1                    1364 	.db #0xe1	; 225
-      000804 21                    1365 	.db #0x21	; 33
-      000805 F5                    1366 	.db #0xf5	; 245
-      000806 FF                    1367 	.db #0xff	; 255
-      000807                       1368 _freq:
-      000807 71                    1369 	.db #0x71	; 113	'q'
-      000808 F5                    1370 	.db #0xf5	; 245
-      000809 21                    1371 	.db #0x21	; 33
-      00080A 19                    1372 	.db #0x19	; 25
-      00080B FF                    1373 	.db #0xff	; 255
-      00080C FF                    1374 	.db #0xff	; 255
-      00080D FF                    1375 	.db #0xff	; 255
-      00080E FF                    1376 	.db #0xff	; 255
-      00080F                       1377 _fast:
-      00080F 43                    1378 	.db #0x43	; 67	'C'
-      000810 11                    1379 	.db #0x11	; 17
-      000811 E1                    1380 	.db #0xe1	; 225
-      000812 61                    1381 	.db #0x61	; 97	'a'
-      000813 FF                    1382 	.db #0xff	; 255
-      000814 02                    1383 	.db #0x02	; 2
-      000815 9F                    1384 	.db #0x9f	; 159
-      000816 4B                    1385 	.db #0x4b	; 75	'K'
-      000817                       1386 _normal:
-      000817 43                    1387 	.db #0x43	; 67	'C'
-      000818 11                    1388 	.db #0x11	; 17
-      000819 E1                    1389 	.db #0xe1	; 225
-      00081A 61                    1390 	.db #0x61	; 97	'a'
-      00081B FF                    1391 	.db #0xff	; 255
-      00081C 9E                    1392 	.db #0x9e	; 158
-      00081D 03                    1393 	.db #0x03	; 3
-      00081E 4B                    1394 	.db #0x4b	; 75	'K'
-                                   1395 	.area XINIT   (CODE)
-                                   1396 	.area CABS    (ABS,CODE)
+      000273 12 05 B6         [24]  903 	lcall	__mullonglong
+      000276 85 82 46         [24]  904 	mov	__mullonglong_PARM_2,dpl
+      000279 85 83 47         [24]  905 	mov	(__mullonglong_PARM_2 + 1),dph
+      00027C 85 F0 48         [24]  906 	mov	(__mullonglong_PARM_2 + 2),b
+      00027F F5 49            [12]  907 	mov	(__mullonglong_PARM_2 + 3),a
+      000281 8C 4A            [24]  908 	mov	(__mullonglong_PARM_2 + 4),r4
+      000283 8D 4B            [24]  909 	mov	(__mullonglong_PARM_2 + 5),r5
+      000285 8E 4C            [24]  910 	mov	(__mullonglong_PARM_2 + 6),r6
+      000287 8F 4D            [24]  911 	mov	(__mullonglong_PARM_2 + 7),r7
+      000289 90 00 0A         [24]  912 	mov	dptr,#(0x0a&0x00ff)
+      00028C E4               [12]  913 	clr	a
+      00028D F5 F0            [12]  914 	mov	b,a
+      00028F FC               [12]  915 	mov	r4,a
+      000290 FD               [12]  916 	mov	r5,a
+      000291 FE               [12]  917 	mov	r6,a
+      000292 FF               [12]  918 	mov	r7,a
+      000293 12 05 B6         [24]  919 	lcall	__mullonglong
+      000296 A8 82            [24]  920 	mov	r0,dpl
+      000298 A9 83            [24]  921 	mov	r1,dph
+      00029A AA F0            [24]  922 	mov	r2,b
+      00029C FB               [12]  923 	mov	r3,a
+      00029D 85 3A 46         [24]  924 	mov	__divulonglong_PARM_2,_freqcount
+      0002A0 85 3B 47         [24]  925 	mov	(__divulonglong_PARM_2 + 1),(_freqcount + 1)
+      0002A3 85 3C 48         [24]  926 	mov	(__divulonglong_PARM_2 + 2),(_freqcount + 2)
+      0002A6 85 3D 49         [24]  927 	mov	(__divulonglong_PARM_2 + 3),(_freqcount + 3)
+      0002A9 75 4A 00         [24]  928 	mov	(__divulonglong_PARM_2 + 4),#0x00
+      0002AC 75 4B 00         [24]  929 	mov	(__divulonglong_PARM_2 + 5),#0x00
+      0002AF 75 4C 00         [24]  930 	mov	(__divulonglong_PARM_2 + 6),#0x00
+      0002B2 75 4D 00         [24]  931 	mov	(__divulonglong_PARM_2 + 7),#0x00
+      0002B5 88 82            [24]  932 	mov	dpl,r0
+      0002B7 89 83            [24]  933 	mov	dph,r1
+      0002B9 8A F0            [24]  934 	mov	b,r2
+      0002BB EB               [12]  935 	mov	a,r3
+      0002BC 12 07 18         [24]  936 	lcall	__divulonglong
+      0002BF A8 82            [24]  937 	mov	r0,dpl
+      0002C1 A9 83            [24]  938 	mov	r1,dph
+      0002C3 AA F0            [24]  939 	mov	r2,b
+      0002C5 FB               [12]  940 	mov	r3,a
+      0002C6 74 05            [12]  941 	mov	a,#0x05
+      0002C8 28               [12]  942 	add	a,r0
+      0002C9 F8               [12]  943 	mov	r0,a
+      0002CA E4               [12]  944 	clr	a
+      0002CB 39               [12]  945 	addc	a,r1
+      0002CC F9               [12]  946 	mov	r1,a
+      0002CD E4               [12]  947 	clr	a
+      0002CE 3A               [12]  948 	addc	a,r2
+      0002CF FA               [12]  949 	mov	r2,a
+      0002D0 E4               [12]  950 	clr	a
+      0002D1 3B               [12]  951 	addc	a,r3
+      0002D2 FB               [12]  952 	mov	r3,a
+      0002D3 E4               [12]  953 	clr	a
+      0002D4 3C               [12]  954 	addc	a,r4
+      0002D5 FC               [12]  955 	mov	r4,a
+      0002D6 E4               [12]  956 	clr	a
+      0002D7 3D               [12]  957 	addc	a,r5
+      0002D8 FD               [12]  958 	mov	r5,a
+      0002D9 E4               [12]  959 	clr	a
+      0002DA 3E               [12]  960 	addc	a,r6
+      0002DB FE               [12]  961 	mov	r6,a
+      0002DC E4               [12]  962 	clr	a
+      0002DD 3F               [12]  963 	addc	a,r7
+      0002DE FF               [12]  964 	mov	r7,a
+      0002DF 75 46 0A         [24]  965 	mov	__divulonglong_PARM_2,#0x0a
+      0002E2 E4               [12]  966 	clr	a
+      0002E3 F5 47            [12]  967 	mov	(__divulonglong_PARM_2 + 1),a
+      0002E5 F5 48            [12]  968 	mov	(__divulonglong_PARM_2 + 2),a
+      0002E7 F5 49            [12]  969 	mov	(__divulonglong_PARM_2 + 3),a
+      0002E9 F5 4A            [12]  970 	mov	(__divulonglong_PARM_2 + 4),a
+      0002EB F5 4B            [12]  971 	mov	(__divulonglong_PARM_2 + 5),a
+      0002ED F5 4C            [12]  972 	mov	(__divulonglong_PARM_2 + 6),a
+      0002EF F5 4D            [12]  973 	mov	(__divulonglong_PARM_2 + 7),a
+      0002F1 88 82            [24]  974 	mov	dpl,r0
+      0002F3 89 83            [24]  975 	mov	dph,r1
+      0002F5 8A F0            [24]  976 	mov	b,r2
+      0002F7 EB               [12]  977 	mov	a,r3
+                                    978 ;	main.c:109: }
+      0002F8 02 07 18         [24]  979 	ljmp	__divulonglong
+                                    980 ;------------------------------------------------------------
+                                    981 ;Allocation info for local variables in function 'reset'
+                                    982 ;------------------------------------------------------------
+                                    983 ;	main.c:110: void reset(){
+                                    984 ;	-----------------------------------------
+                                    985 ;	 function reset
+                                    986 ;	-----------------------------------------
+      0002FB                        987 _reset:
+                                    988 ;	main.c:111: GATECTL=0;
+                                    989 ;	assignBit
+      0002FB C2 B6            [12]  990 	clr	_P3_6
+                                    991 ;	main.c:112: TR0=0;TR1=0;
+                                    992 ;	assignBit
+      0002FD C2 8C            [12]  993 	clr	_TR0
+                                    994 ;	assignBit
+      0002FF C2 8E            [12]  995 	clr	_TR1
+                                    996 ;	main.c:113: inCnt.b0=P0;
+      000301 85 80 2E         [24]  997 	mov	_inCnt,_P0
+                                    998 ;	main.c:114: inCnt.b1=TL0;
+      000304 85 8A 2F         [24]  999 	mov	(_inCnt + 0x0001),_TL0
+                                   1000 ;	main.c:115: inCnt.b2=TH0;
+      000307 85 8C 30         [24] 1001 	mov	(_inCnt + 0x0002),_TH0
+                                   1002 ;	main.c:116: incount=inCnt.l;
+      00030A 85 2E 36         [24] 1003 	mov	_incount,(_inCnt + 0)
+      00030D 85 2F 37         [24] 1004 	mov	(_incount + 1),(_inCnt + 1)
+      000310 85 30 38         [24] 1005 	mov	(_incount + 2),(_inCnt + 2)
+      000313 85 31 39         [24] 1006 	mov	(_incount + 3),(_inCnt + 3)
+                                   1007 ;	main.c:117: inCnt.b3=0;
+      000316 75 31 00         [24] 1008 	mov	(_inCnt + 0x0003),#0x00
+                                   1009 ;	main.c:118: freqCnt.b0=P2;
+      000319 85 A0 32         [24] 1010 	mov	_freqCnt,_P2
+                                   1011 ;	main.c:119: freqCnt.b1=TL1;
+      00031C 85 8B 33         [24] 1012 	mov	(_freqCnt + 0x0001),_TL1
+                                   1013 ;	main.c:120: freqCnt.b2=TH1;
+      00031F 85 8D 34         [24] 1014 	mov	(_freqCnt + 0x0002),_TH1
+                                   1015 ;	main.c:121: freqcount=freqCnt.l;
+      000322 85 32 3A         [24] 1016 	mov	_freqcount,(_freqCnt + 0)
+      000325 85 33 3B         [24] 1017 	mov	(_freqcount + 1),(_freqCnt + 1)
+      000328 85 34 3C         [24] 1018 	mov	(_freqcount + 2),(_freqCnt + 2)
+      00032B 85 35 3D         [24] 1019 	mov	(_freqcount + 3),(_freqCnt + 3)
+                                   1020 ;	main.c:122: freqCnt.b3=0;
+      00032E 75 35 00         [24] 1021 	mov	(_freqCnt + 0x0003),#0x00
+                                   1022 ;	main.c:123: CLR=1;
+                                   1023 ;	assignBit
+      000331 D2 B7            [12] 1024 	setb	_P3_7
+                                   1025 ;	main.c:124: TH0=TL0=TH1=TL1=0;
+      000333 75 8B 00         [24] 1026 	mov	_TL1,#0x00
+      000336 75 8D 00         [24] 1027 	mov	_TH1,#0x00
+      000339 75 8A 00         [24] 1028 	mov	_TL0,#0x00
+      00033C 75 8C 00         [24] 1029 	mov	_TH0,#0x00
+                                   1030 ;	main.c:125: overflow=false;
+                                   1031 ;	assignBit
+      00033F C2 01            [12] 1032 	clr	_overflow
+                                   1033 ;	main.c:126: CLR=0;
+                                   1034 ;	assignBit
+      000341 C2 B7            [12] 1035 	clr	_P3_7
+                                   1036 ;	main.c:127: TR0=1;TR1=1;
+                                   1037 ;	assignBit
+      000343 D2 8C            [12] 1038 	setb	_TR0
+                                   1039 ;	assignBit
+      000345 D2 8E            [12] 1040 	setb	_TR1
+                                   1041 ;	main.c:128: GATECTL=1;
+                                   1042 ;	assignBit
+      000347 D2 B6            [12] 1043 	setb	_P3_6
+                                   1044 ;	main.c:129: }
+      000349 22               [24] 1045 	ret
+                                   1046 ;------------------------------------------------------------
+                                   1047 ;Allocation info for local variables in function 'readKey'
+                                   1048 ;------------------------------------------------------------
+                                   1049 ;keylong                   Allocated with name '_readKey_keylong_65536_23'
+                                   1050 ;gotkey                    Allocated with name '_readKey_gotkey_65536_23'
+                                   1051 ;k                         Allocated to registers r7 
+                                   1052 ;key                       Allocated to registers r6 
+                                   1053 ;------------------------------------------------------------
+                                   1054 ;	main.c:132: unsigned char readKey(){
+                                   1055 ;	-----------------------------------------
+                                   1056 ;	 function readKey
+                                   1057 ;	-----------------------------------------
+      00034A                       1058 _readKey:
+                                   1059 ;	main.c:135: unsigned char k=0,key=0;
+      00034A 7F 00            [12] 1060 	mov	r7,#0x00
+      00034C 7E 00            [12] 1061 	mov	r6,#0x00
+                                   1062 ;	main.c:137: if(!KEY)key=1;if(!KEY2)key=2;
+      00034E 20 90 02         [24] 1063 	jb	_P1_0,00102$
+      000351 7E 01            [12] 1064 	mov	r6,#0x01
+      000353                       1065 00102$:
+      000353 20 91 02         [24] 1066 	jb	_P1_1,00104$
+      000356 7E 02            [12] 1067 	mov	r6,#0x02
+      000358                       1068 00104$:
+                                   1069 ;	main.c:138: if(key!=0){
+      000358 EE               [12] 1070 	mov	a,r6
+      000359 60 24            [24] 1071 	jz	00116$
+                                   1072 ;	main.c:139: gotkey=key;
+      00035B 8E 44            [24] 1073 	mov	_readKey_gotkey_65536_23,r6
+                                   1074 ;	main.c:140: if(keydly>0)keydly--;
+      00035D E5 27            [12] 1075 	mov	a,_keydly
+      00035F 60 02            [24] 1076 	jz	00106$
+      000361 15 27            [12] 1077 	dec	_keydly
+      000363                       1078 00106$:
+                                   1079 ;	main.c:141: if(keylong>0)keylong--;
+      000363 E5 42            [12] 1080 	mov	a,_readKey_keylong_65536_23
+      000365 45 43            [12] 1081 	orl	a,(_readKey_keylong_65536_23 + 1)
+      000367 60 0B            [24] 1082 	jz	00110$
+      000369 15 42            [12] 1083 	dec	_readKey_keylong_65536_23
+      00036B 74 FF            [12] 1084 	mov	a,#0xff
+      00036D B5 42 02         [24] 1085 	cjne	a,_readKey_keylong_65536_23,00157$
+      000370 15 43            [12] 1086 	dec	(_readKey_keylong_65536_23 + 1)
+      000372                       1087 00157$:
+      000372 80 1F            [24] 1088 	sjmp	00117$
+      000374                       1089 00110$:
+                                   1090 ;	main.c:143: if(!longdown){
+      000374 20 04 1C         [24] 1091 	jb	_readKey_longdown_65536_23,00117$
+                                   1092 ;	main.c:144: longdown=true;
+                                   1093 ;	assignBit
+      000377 D2 04            [12] 1094 	setb	_readKey_longdown_65536_23
+                                   1095 ;	main.c:145: k=key+2;
+      000379 74 02            [12] 1096 	mov	a,#0x02
+      00037B 2E               [12] 1097 	add	a,r6
+      00037C FF               [12] 1098 	mov	r7,a
+      00037D 80 14            [24] 1099 	sjmp	00117$
+      00037F                       1100 00116$:
+                                   1101 ;	main.c:149: if(keydly==0 && !longdown)k=gotkey;
+      00037F E5 27            [12] 1102 	mov	a,_keydly
+      000381 70 05            [24] 1103 	jnz	00113$
+      000383 20 04 02         [24] 1104 	jb	_readKey_longdown_65536_23,00113$
+      000386 AF 44            [24] 1105 	mov	r7,_readKey_gotkey_65536_23
+      000388                       1106 00113$:
+                                   1107 ;	main.c:150: keydly=KEYDLY;
+      000388 75 27 32         [24] 1108 	mov	_keydly,#0x32
+                                   1109 ;	main.c:151: keylong=KEYLONG;
+      00038B 75 42 F4         [24] 1110 	mov	_readKey_keylong_65536_23,#0xf4
+      00038E 75 43 01         [24] 1111 	mov	(_readKey_keylong_65536_23 + 1),#0x01
+                                   1112 ;	main.c:152: longdown=false;
+                                   1113 ;	assignBit
+      000391 C2 04            [12] 1114 	clr	_readKey_longdown_65536_23
+      000393                       1115 00117$:
+                                   1116 ;	main.c:154: return k;
+      000393 8F 82            [24] 1117 	mov	dpl,r7
+                                   1118 ;	main.c:155: }
+      000395 22               [24] 1119 	ret
+                                   1120 ;------------------------------------------------------------
+                                   1121 ;Allocation info for local variables in function 'setmode'
+                                   1122 ;------------------------------------------------------------
+                                   1123 ;	main.c:157: void setmode(){
+                                   1124 ;	-----------------------------------------
+                                   1125 ;	 function setmode
+                                   1126 ;	-----------------------------------------
+      000396                       1127 _setmode:
+                                   1128 ;	main.c:158: switch(readKey()){
+      000396 12 03 4A         [24] 1129 	lcall	_readKey
+      000399 AF 82            [24] 1130 	mov	r7,dpl
+      00039B BF 01 02         [24] 1131 	cjne	r7,#0x01,00153$
+      00039E 80 10            [24] 1132 	sjmp	00101$
+      0003A0                       1133 00153$:
+      0003A0 BF 02 02         [24] 1134 	cjne	r7,#0x02,00154$
+      0003A3 80 35            [24] 1135 	sjmp	00105$
+      0003A5                       1136 00154$:
+      0003A5 BF 03 02         [24] 1137 	cjne	r7,#0x03,00155$
+      0003A8 80 59            [24] 1138 	sjmp	00110$
+      0003AA                       1139 00155$:
+      0003AA BF 04 02         [24] 1140 	cjne	r7,#0x04,00156$
+      0003AD 80 54            [24] 1141 	sjmp	00110$
+      0003AF                       1142 00156$:
+      0003AF 22               [24] 1143 	ret
+                                   1144 ;	main.c:159: case 1:  //+
+      0003B0                       1145 00101$:
+                                   1146 ;	main.c:160: switch(mode){
+      0003B0 E4               [12] 1147 	clr	a
+      0003B1 B5 45 02         [24] 1148 	cjne	a,_mode,00157$
+      0003B4 80 08            [24] 1149 	sjmp	00102$
+      0003B6                       1150 00157$:
+      0003B6 74 01            [12] 1151 	mov	a,#0x01
+      0003B8 B5 45 02         [24] 1152 	cjne	a,_mode,00158$
+      0003BB 80 1A            [24] 1153 	sjmp	00103$
+      0003BD                       1154 00158$:
+      0003BD 22               [24] 1155 	ret
+                                   1156 ;	main.c:161: case Freq:
+      0003BE                       1157 00102$:
+                                   1158 ;	main.c:162: speed=NORMAL;
+      0003BE 75 26 64         [24] 1159 	mov	_speed,#0x64
+                                   1160 ;	main.c:163: putstr(normal);
+      0003C1 90 08 73         [24] 1161 	mov	dptr,#_normal
+      0003C4 75 F0 80         [24] 1162 	mov	b,#0x80
+      0003C7 12 01 33         [24] 1163 	lcall	_putstr
+                                   1164 ;	main.c:164: reset();
+      0003CA 12 02 FB         [24] 1165 	lcall	_reset
+                                   1166 ;	main.c:165: gateDelay=16;
+      0003CD 75 25 10         [24] 1167 	mov	_gateDelay,#0x10
+                                   1168 ;	main.c:166: delay=1000;
+      0003D0 75 28 E8         [24] 1169 	mov	_delay,#0xe8
+      0003D3 75 29 03         [24] 1170 	mov	(_delay + 1),#0x03
+                                   1171 ;	main.c:167: break;
+                                   1172 ;	main.c:168: case Counter:
+      0003D6 22               [24] 1173 	ret
+      0003D7                       1174 00103$:
+                                   1175 ;	main.c:169: GATECTL=!GATECTL;
+      0003D7 B2 B6            [12] 1176 	cpl	_P3_6
+                                   1177 ;	main.c:172: break;
+                                   1178 ;	main.c:173: case 2:  //-
+      0003D9 22               [24] 1179 	ret
+      0003DA                       1180 00105$:
+                                   1181 ;	main.c:174: switch(mode){
+      0003DA E4               [12] 1182 	clr	a
+      0003DB B5 45 02         [24] 1183 	cjne	a,_mode,00159$
+      0003DE 80 07            [24] 1184 	sjmp	00106$
+      0003E0                       1185 00159$:
+      0003E0 74 01            [12] 1186 	mov	a,#0x01
+                                   1187 ;	main.c:175: case Freq:
+      0003E2 B5 45 45         [24] 1188 	cjne	a,_mode,00115$
+      0003E5 80 19            [24] 1189 	sjmp	00107$
+      0003E7                       1190 00106$:
+                                   1191 ;	main.c:176: speed=FAST;
+      0003E7 75 26 0A         [24] 1192 	mov	_speed,#0x0a
+                                   1193 ;	main.c:177: putstr(fast);
+      0003EA 90 08 6B         [24] 1194 	mov	dptr,#_fast
+      0003ED 75 F0 80         [24] 1195 	mov	b,#0x80
+      0003F0 12 01 33         [24] 1196 	lcall	_putstr
+                                   1197 ;	main.c:178: reset();
+      0003F3 12 02 FB         [24] 1198 	lcall	_reset
+                                   1199 ;	main.c:179: gateDelay=16;
+      0003F6 75 25 10         [24] 1200 	mov	_gateDelay,#0x10
+                                   1201 ;	main.c:180: delay=1000;
+      0003F9 75 28 E8         [24] 1202 	mov	_delay,#0xe8
+      0003FC 75 29 03         [24] 1203 	mov	(_delay + 1),#0x03
+                                   1204 ;	main.c:181: break;
+                                   1205 ;	main.c:182: case Counter:
+      0003FF 22               [24] 1206 	ret
+      000400                       1207 00107$:
+                                   1208 ;	main.c:183: reset();
+                                   1209 ;	main.c:186: break;
+                                   1210 ;	main.c:188: case 4:
+      000400 02 02 FB         [24] 1211 	ljmp	_reset
+      000403                       1212 00110$:
+                                   1213 ;	main.c:189: if(mode!=Freq){
+      000403 E5 45            [12] 1214 	mov	a,_mode
+      000405 60 0E            [24] 1215 	jz	00112$
+                                   1216 ;	main.c:190: mode=Freq;
+      000407 75 45 00         [24] 1217 	mov	_mode,#0x00
+                                   1218 ;	main.c:191: putstr(freq);
+      00040A 90 08 63         [24] 1219 	mov	dptr,#_freq
+      00040D 75 F0 80         [24] 1220 	mov	b,#0x80
+      000410 12 01 33         [24] 1221 	lcall	_putstr
+      000413 80 0C            [24] 1222 	sjmp	00113$
+      000415                       1223 00112$:
+                                   1224 ;	main.c:193: mode=Counter;
+      000415 75 45 01         [24] 1225 	mov	_mode,#0x01
+                                   1226 ;	main.c:194: putstr(counter);
+      000418 90 08 5B         [24] 1227 	mov	dptr,#_counter
+      00041B 75 F0 80         [24] 1228 	mov	b,#0x80
+      00041E 12 01 33         [24] 1229 	lcall	_putstr
+      000421                       1230 00113$:
+                                   1231 ;	main.c:196: reset();
+      000421 12 02 FB         [24] 1232 	lcall	_reset
+                                   1233 ;	main.c:197: delay=1000;
+      000424 75 28 E8         [24] 1234 	mov	_delay,#0xe8
+      000427 75 29 03         [24] 1235 	mov	(_delay + 1),#0x03
+                                   1236 ;	main.c:199: }
+      00042A                       1237 00115$:
+                                   1238 ;	main.c:201: }
+      00042A 22               [24] 1239 	ret
+                                   1240 ;------------------------------------------------------------
+                                   1241 ;Allocation info for local variables in function 'main'
+                                   1242 ;------------------------------------------------------------
+                                   1243 ;	main.c:204: void main(void){
+                                   1244 ;	-----------------------------------------
+                                   1245 ;	 function main
+                                   1246 ;	-----------------------------------------
+      00042B                       1247 _main:
+                                   1248 ;	main.c:206: PT0=1;PT1=1;
+                                   1249 ;	assignBit
+      00042B D2 B9            [12] 1250 	setb	_PT0
+                                   1251 ;	assignBit
+      00042D D2 BB            [12] 1252 	setb	_PT1
+                                   1253 ;	main.c:207: PT2=1;
+                                   1254 ;	assignBit
+      00042F D2 BD            [12] 1255 	setb	_PT2
+                                   1256 ;	main.c:208: SCON=0;
+      000431 75 98 00         [24] 1257 	mov	_SCON,#0x00
+                                   1258 ;	main.c:209: REN=0;
+                                   1259 ;	assignBit
+      000434 C2 9C            [12] 1260 	clr	_REN
+                                   1261 ;	main.c:210: ES=1;
+                                   1262 ;	assignBit
+      000436 D2 AC            [12] 1263 	setb	_ES
+                                   1264 ;	main.c:211: GATECTL=0;
+                                   1265 ;	assignBit
+      000438 C2 B6            [12] 1266 	clr	_P3_6
+                                   1267 ;	main.c:212: CLR=1;
+                                   1268 ;	assignBit
+      00043A D2 B7            [12] 1269 	setb	_P3_7
+                                   1270 ;	main.c:213: TMOD=0x55;
+      00043C 75 89 55         [24] 1271 	mov	_TMOD,#0x55
+                                   1272 ;	main.c:214: TR0=0;TR1=0;ET0=1;ET1=1;
+                                   1273 ;	assignBit
+      00043F C2 8C            [12] 1274 	clr	_TR0
+                                   1275 ;	assignBit
+      000441 C2 8E            [12] 1276 	clr	_TR1
+                                   1277 ;	assignBit
+      000443 D2 A9            [12] 1278 	setb	_ET0
+                                   1279 ;	assignBit
+      000445 D2 AB            [12] 1280 	setb	_ET1
+                                   1281 ;	main.c:215: TH0=0;
+      000447 75 8C 00         [24] 1282 	mov	_TH0,#0x00
+                                   1283 ;	main.c:216: TL0=0;
+      00044A 75 8A 00         [24] 1284 	mov	_TL0,#0x00
+                                   1285 ;	main.c:217: TH1=0;
+      00044D 75 8D 00         [24] 1286 	mov	_TH1,#0x00
+                                   1287 ;	main.c:218: TL1=0;
+      000450 75 8B 00         [24] 1288 	mov	_TL1,#0x00
+                                   1289 ;	main.c:219: RCAP2H=0xFD;   //10M  1/1000s
+      000453 75 CB FD         [24] 1290 	mov	_RCAP2H,#0xfd
+                                   1291 ;	main.c:220: RCAP2L=0xBD;
+      000456 75 CA BD         [24] 1292 	mov	_RCAP2L,#0xbd
+                                   1293 ;	main.c:221: T2CON=0;
+      000459 75 C8 00         [24] 1294 	mov	_T2CON,#0x00
+                                   1295 ;	main.c:222: T2MOD=0;
+      00045C 75 C9 00         [24] 1296 	mov	_T2MOD,#0x00
+                                   1297 ;	main.c:223: TR2=1;
+                                   1298 ;	assignBit
+      00045F D2 CA            [12] 1299 	setb	_TR2
+                                   1300 ;	main.c:224: ET2=1;
+                                   1301 ;	assignBit
+      000461 D2 AD            [12] 1302 	setb	_ET2
+                                   1303 ;	main.c:225: EA=1;
+                                   1304 ;	assignBit
+      000463 D2 AF            [12] 1305 	setb	_EA
+                                   1306 ;	main.c:226: putstr(cymomer);
+      000465 90 08 53         [24] 1307 	mov	dptr,#_cymomer
+      000468 75 F0 80         [24] 1308 	mov	b,#0x80
+      00046B 12 01 33         [24] 1309 	lcall	_putstr
+                                   1310 ;	main.c:227: delay=1000;
+      00046E 75 28 E8         [24] 1311 	mov	_delay,#0xe8
+      000471 75 29 03         [24] 1312 	mov	(_delay + 1),#0x03
+                                   1313 ;	main.c:228: while(1){
+      000474                       1314 00114$:
+                                   1315 ;	main.c:229: PCON|=1;
+      000474 43 87 01         [24] 1316 	orl	_PCON,#0x01
+                                   1317 ;	main.c:230: setmode();
+      000477 12 03 96         [24] 1318 	lcall	_setmode
+                                   1319 ;	main.c:231: if(delay>0){delay--;continue;}
+      00047A E5 28            [12] 1320 	mov	a,_delay
+      00047C 45 29            [12] 1321 	orl	a,(_delay + 1)
+      00047E 60 0B            [24] 1322 	jz	00102$
+      000480 15 28            [12] 1323 	dec	_delay
+      000482 74 FF            [12] 1324 	mov	a,#0xff
+      000484 B5 28 02         [24] 1325 	cjne	a,_delay,00143$
+      000487 15 29            [12] 1326 	dec	(_delay + 1)
+      000489                       1327 00143$:
+      000489 80 E9            [24] 1328 	sjmp	00114$
+      00048B                       1329 00102$:
+                                   1330 ;	main.c:232: switch(mode){
+      00048B E4               [12] 1331 	clr	a
+      00048C B5 45 02         [24] 1332 	cjne	a,_mode,00144$
+      00048F 80 07            [24] 1333 	sjmp	00103$
+      000491                       1334 00144$:
+      000491 74 01            [12] 1335 	mov	a,#0x01
+                                   1336 ;	main.c:233: case Freq:
+      000493 B5 45 DE         [24] 1337 	cjne	a,_mode,00114$
+      000496 80 28            [24] 1338 	sjmp	00111$
+      000498                       1339 00103$:
+                                   1340 ;	main.c:234: if(!GATE&&!GATECTL||gateDelay==0){
+      000498 20 B3 03         [24] 1341 	jb	_P3_3,00110$
+      00049B 30 B6 04         [24] 1342 	jnb	_P3_6,00106$
+      00049E                       1343 00110$:
+      00049E E5 25            [12] 1344 	mov	a,_gateDelay
+      0004A0 70 15            [24] 1345 	jnz	00107$
+      0004A2                       1346 00106$:
+                                   1347 ;	main.c:235: gatelost=gateDelay==0;
+      0004A2 E5 25            [12] 1348 	mov	a,_gateDelay
+      0004A4 B4 01 00         [24] 1349 	cjne	a,#0x01,00149$
+      0004A7                       1350 00149$:
+      0004A7 92 02            [24] 1351 	mov	_gatelost,c
+                                   1352 ;	main.c:236: reset();
+      0004A9 12 02 FB         [24] 1353 	lcall	_reset
+                                   1354 ;	main.c:237: putlong(getFreq());
+      0004AC 12 02 37         [24] 1355 	lcall	_getFreq
+      0004AF 12 01 57         [24] 1356 	lcall	_putlong
+                                   1357 ;	main.c:238: gateDelay=17;
+      0004B2 75 25 11         [24] 1358 	mov	_gateDelay,#0x11
+      0004B5 80 BD            [24] 1359 	sjmp	00114$
+      0004B7                       1360 00107$:
+                                   1361 ;	main.c:239: }else if(gateDelay==5){
+      0004B7 74 05            [12] 1362 	mov	a,#0x05
+      0004B9 B5 25 B8         [24] 1363 	cjne	a,_gateDelay,00114$
+                                   1364 ;	main.c:240: GATECTL=0;
+                                   1365 ;	assignBit
+      0004BC C2 B6            [12] 1366 	clr	_P3_6
+                                   1367 ;	main.c:242: break;
+                                   1368 ;	main.c:243: case Counter:
+      0004BE 80 B4            [24] 1369 	sjmp	00114$
+      0004C0                       1370 00111$:
+                                   1371 ;	main.c:244: putlong(getCount());
+      0004C0 12 02 22         [24] 1372 	lcall	_getCount
+      0004C3 12 01 57         [24] 1373 	lcall	_putlong
+                                   1374 ;	main.c:245: delay=50;
+      0004C6 75 28 32         [24] 1375 	mov	_delay,#0x32
+      0004C9 75 29 00         [24] 1376 	mov	(_delay + 1),#0x00
+                                   1377 ;	main.c:247: }
+                                   1378 ;	main.c:250: }
+      0004CC 80 A6            [24] 1379 	sjmp	00114$
+                                   1380 	.area CSEG    (CODE)
+                                   1381 	.area CONST   (CODE)
+      00083B                       1382 _LedSegs:
+      00083B 03                    1383 	.db #0x03	; 3
+      00083C 9F                    1384 	.db #0x9f	; 159
+      00083D 25                    1385 	.db #0x25	; 37
+      00083E 0D                    1386 	.db #0x0d	; 13
+      00083F 99                    1387 	.db #0x99	; 153
+      000840 49                    1388 	.db #0x49	; 73	'I'
+      000841 41                    1389 	.db #0x41	; 65	'A'
+      000842 1F                    1390 	.db #0x1f	; 31
+      000843 01                    1391 	.db #0x01	; 1
+      000844 09                    1392 	.db #0x09	; 9
+      000845 11                    1393 	.db #0x11	; 17
+      000846 C1                    1394 	.db #0xc1	; 193
+      000847 63                    1395 	.db #0x63	; 99	'c'
+      000848 85                    1396 	.db #0x85	; 133
+      000849 61                    1397 	.db #0x61	; 97	'a'
+      00084A 71                    1398 	.db #0x71	; 113	'q'
+      00084B                       1399 _LedDigit:
+      00084B 01                    1400 	.db #0x01	; 1
+      00084C 02                    1401 	.db #0x02	; 2
+      00084D 04                    1402 	.db #0x04	; 4
+      00084E 08                    1403 	.db #0x08	; 8
+      00084F 10                    1404 	.db #0x10	; 16
+      000850 20                    1405 	.db #0x20	; 32
+      000851 40                    1406 	.db #0x40	; 64
+      000852 80                    1407 	.db #0x80	; 128
+      000853                       1408 _cymomer:
+      000853 63                    1409 	.db #0x63	; 99	'c'
+      000854 89                    1410 	.db #0x89	; 137
+      000855 55                    1411 	.db #0x55	; 85	'U'
+      000856 C5                    1412 	.db #0xc5	; 197
+      000857 55                    1413 	.db #0x55	; 85	'U'
+      000858 21                    1414 	.db #0x21	; 33
+      000859 F5                    1415 	.db #0xf5	; 245
+      00085A FF                    1416 	.db #0xff	; 255
+      00085B                       1417 _counter:
+      00085B 63                    1418 	.db #0x63	; 99	'c'
+      00085C C5                    1419 	.db #0xc5	; 197
+      00085D C7                    1420 	.db #0xc7	; 199
+      00085E D5                    1421 	.db #0xd5	; 213
+      00085F E1                    1422 	.db #0xe1	; 225
+      000860 21                    1423 	.db #0x21	; 33
+      000861 F5                    1424 	.db #0xf5	; 245
+      000862 FF                    1425 	.db #0xff	; 255
+      000863                       1426 _freq:
+      000863 71                    1427 	.db #0x71	; 113	'q'
+      000864 F5                    1428 	.db #0xf5	; 245
+      000865 21                    1429 	.db #0x21	; 33
+      000866 19                    1430 	.db #0x19	; 25
+      000867 FF                    1431 	.db #0xff	; 255
+      000868 FF                    1432 	.db #0xff	; 255
+      000869 FF                    1433 	.db #0xff	; 255
+      00086A FF                    1434 	.db #0xff	; 255
+      00086B                       1435 _fast:
+      00086B 43                    1436 	.db #0x43	; 67	'C'
+      00086C 11                    1437 	.db #0x11	; 17
+      00086D E1                    1438 	.db #0xe1	; 225
+      00086E 61                    1439 	.db #0x61	; 97	'a'
+      00086F FF                    1440 	.db #0xff	; 255
+      000870 02                    1441 	.db #0x02	; 2
+      000871 9F                    1442 	.db #0x9f	; 159
+      000872 4B                    1443 	.db #0x4b	; 75	'K'
+      000873                       1444 _normal:
+      000873 43                    1445 	.db #0x43	; 67	'C'
+      000874 11                    1446 	.db #0x11	; 17
+      000875 E1                    1447 	.db #0xe1	; 225
+      000876 61                    1448 	.db #0x61	; 97	'a'
+      000877 FF                    1449 	.db #0xff	; 255
+      000878 9E                    1450 	.db #0x9e	; 158
+      000879 03                    1451 	.db #0x03	; 3
+      00087A 4B                    1452 	.db #0x4b	; 75	'K'
+                                   1453 	.area XINIT   (CODE)
+                                   1454 	.area CABS    (ABS,CODE)

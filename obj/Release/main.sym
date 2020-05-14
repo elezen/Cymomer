@@ -375,7 +375,7 @@ Symbol Table
   5 _led_i                                                         000000 GR
   8 _leds                                                          000000 GR
   A _longdown                                                      000003 GR
- 18 _main                                                          000310 GR
+ 18 _main                                                          00036C GR
   5 _mainFreq                                                      000009 GR
   5 _mode                                                          000024 GR
   5 _msTick                                                        000003 GR
@@ -386,13 +386,13 @@ Symbol Table
   5 _putlong_a_65536_13                                            00001D R
   8 _putlong_buf_65536_14                                          000008 R
  18 _putstr                                                        000074 GR
- 18 _readKey                                                       00022F GR
+ 18 _readKey                                                       00028B GR
   5 _readKey_gotkey_65536_23                                       000023 R
   5 _readKey_keylong_65536_23                                      000021 R
   A _readKey_longdown_65536_23                                     000004 R
- 18 _reset                                                         0001E0 GR
+ 18 _reset                                                         00023C GR
  18 _serialPort                                                    000014 GR
- 18 _setmode                                                       00027B GR
+ 18 _setmode                                                       0002D7 GR
   5 _speed                                                         000005 GR
  18 _timer2                                                        000040 GR
     a                                                           =  0000E0 L
@@ -624,7 +624,7 @@ Area Table
   15 GSINIT5                                    size      0   flags   20
   16 GSINIT                                     size     32   flags   20
   17 GSFINAL                                    size      3   flags   20
-  18 CSEG                                       size    3B3   flags   20
+  18 CSEG                                       size    40F   flags   20
   19 CONST                                      size     40   flags   20
   1A XINIT                                      size      0   flags   20
   1B CABS                                       size      0   flags   28
