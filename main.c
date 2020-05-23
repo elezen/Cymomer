@@ -1,11 +1,11 @@
 /*
  */
+//#define FREQ 26003500L
 #define FREQ 10000000L
 #define NORMAL 100
 #define FAST 10
 #define KEYDLY 50
 #define KEYLONG 500
-//#define FREQ 40499753L
 #include <mcs51/at89x52.h>
 #define CLR P3_7
 #define GATECTL P3_6
@@ -18,7 +18,7 @@
 __code unsigned char LedSegs[]={3, 159, 37, 13, 153, 73, 65, 31, 1, 9, 17, 193, 99, 133, 97, 113};
 __code unsigned char LedDigit[]={0x1,0x2,0x4,0x8,0x10,0x20,0x40,0x80};
 __idata char leds[8];
-char led_i,num_i=0;
+char led_i=0;
 __bit ledReady,overflow=false,gatelost=false;
 char led_d;
 unsigned char msTick=0,gateDelay=0,speed=NORMAL,keydly=KEYDLY;
@@ -29,6 +29,7 @@ __code char counter[]={0x63,0xc5,0xc7,0xd5,0xe1,0x21,0xf5,0xff};
 __code char freq[]  = {0x71,0xf5,0x21,0x19,0xff,0xff,0xff,0xff};
 __code char fast[]  = {0x43,0x11,0xe1,0x61,0xff,0x2, 0x9f,0x4b};
 __code char normal[] ={0x43,0x11,0xe1,0x61,0xff,0x9e, 0x3,0x4b};
+__code char finetune[]={0x71,0xDF,0xD5,0x21,0xE1,0xC7,0xD5,0x21};
 
 typedef union{
   unsigned long l;
@@ -69,13 +70,14 @@ void timer2(void) __interrupt 5{
 
 
 
-void putstr(char *s){
+void putstr(__code char *s){
     unsigned char i=7;
     do{
         leds[i]=*s;
         s++;
     }while(i--);
 }
+
 void putlong(unsigned long a){
     char i,c;
     __idata unsigned char buf[8];
@@ -89,8 +91,11 @@ void putlong(unsigned long a){
             buf[i]=0xff;
         }
     }
-    if(a>0)overflow=true;
-    if(overflow)buf[7]&=0xfe;
+    while(a>0){
+        for(i=0;i<7;i++)buf[i]=buf[i+1];
+        buf[7]=LedSegs[a%10];
+        a/=10;
+    }
     if(gatelost)buf[0]&=0xfe;
     for(i=0;i<8;i++)leds[i]=buf[i];
 }
@@ -153,8 +158,10 @@ unsigned char readKey(){
     }
      return k;
 }
-enum{Freq,Counter} mode=Freq;
+enum{Freq,Counter,Tune} mode=Freq;
 void setmode(){
+//    static __bit mainFreqModi=false;
+
     switch(readKey()){
         case 1:  //+
             switch(mode){
@@ -167,6 +174,10 @@ void setmode(){
                     break;
                 case Counter:
                     GATECTL=!GATECTL;
+                    break;
+                case Tune:
+                    ++mainFreq;
+//                    mainFreqModi=true;
                     break;
             }
             break;
@@ -182,10 +193,13 @@ void setmode(){
                 case Counter:
                     reset();
                     break;
+                case Tune:
+                    --mainFreq;
+//                    mainFreqModi=true;
+                    break;
             }
             break;
         case 3: //Freq<->counter
-        case 4:
             if(mode!=Freq){
                 mode=Freq;
                 putstr(freq);
@@ -195,14 +209,26 @@ void setmode(){
             }
             reset();
             delay=1000;
+ //           if(mainFreqModi){saveMainFreq();mainFreqModi=false;}
+            break;
+        case 4:
+            if(mode!=Freq){
+                mode=Freq;
+                putstr(freq);
+            }else{
+                mode=Tune;
+                putstr(finetune);
+            }
+            reset();
+            delay=1000;
+ //           if(mainFreqModi){saveMainFreq();mainFreqModi=false;}
             break;
     }
 
 }
 
-
 void main(void){
-
+    unsigned long n;
     PT0=1;PT1=1;
     PT2=1;
     SCON=0;
@@ -216,8 +242,8 @@ void main(void){
     TL0=0;
     TH1=0;
     TL1=0;
-    RCAP2H=0xFD;   //10M  1/1000s
-    RCAP2L=0xBD;
+    RCAP2H=0xFC;   //10M  1/1000s
+    RCAP2L=0xBE;
     T2CON=0;
     T2MOD=0;
     TR2=1;
@@ -235,7 +261,7 @@ void main(void){
                     gatelost=gateDelay==0;
                     reset();
                     putlong(getFreq());
-                    gateDelay=17;
+                    gateDelay=16;
                 }else if(gateDelay==5){
                     GATECTL=0;
                 }
@@ -243,6 +269,18 @@ void main(void){
             case Counter:
                 putlong(getCount());
                 delay=50;
+                break;
+            case Tune:
+                if(!GATE&&!GATECTL||gateDelay==0){
+                    gatelost=!gatelost;
+                    reset();
+                    n=getFreq();
+                    if(n==0)n=mainFreq;
+                    putlong(n);
+                    gateDelay=16;
+                }else if(gateDelay==5){
+                    GATECTL=0;
+                }
                 break;
         }
 
